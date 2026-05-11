@@ -1,0 +1,35 @@
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
+  <Metadata>
+    <Identity Id="FilepathFooter.d4f8e6b2-3a1c-4d5e-8f7a-9b0c1d2e3f4a" Version="1.0" Language="en-US" Publisher="Vic Guadalupe" />
+    <DisplayName>Filepath Footer</DisplayName>
+    <Description xml:space="preserve">
+      Displays the folder path of the active document at the bottom of the editor window.
+      Click the path to instantly copy it to the clipboard — a transient notification confirms the copy.
+    </Description>
+    <Tags>filepath, path, footer, clipboard, copy</Tags>
+  </Metadata>
+  <Installation>
+    <!-- Targets VS 2022 (17.x) and beyond, including VS 2026 -->
+    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,)">
+      <ProductArchitecture>amd64</ProductArchitecture>
+    </InstallationTarget>
+    <InstallationTarget Id="Microsoft.VisualStudio.Professional" Version="[17.0,)">
+      <ProductArchitecture>amd64</ProductArchitecture>
+    </InstallationTarget>
+    <InstallationTarget Id="Microsoft.VisualStudio.Enterprise" Version="[17.0,)">
+      <ProductArchitecture>amd64</ProductArchitecture>
+    </InstallationTarget>
+  </Installation>
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" Version="[4.8,)" />
+  </Dependencies>
+  <Prerequisites>
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,)" DisplayName="Visual Studio core editor" />
+  </Prerequisites>
+  <Assets>
+    <!-- Registers the AsyncPackage so VS knows about the extension -->
+    <Asset Type="Microsoft.VisualStudio.VsPackage" Path="FilepathFooter.pkgdef" />
+    <!-- Exports MEF components (the margin factory) -->
+    <Asset Type="Microsoft.VisualStudio.MefComponent" Path="FilepathFooter.dll" />
+  </Assets>
+</PackageManifest>

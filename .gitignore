@@ -1,0 +1,34 @@
+## Visual Studio / .NET
+bin/
+obj/
+.vs/
+
+## NuGet
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+bld/
+[Ll]og/
+[Ll]ogs/
+
+## VSIX output
+*.vsix
+
+## Rider / ReSharper
+_ReSharper*/
+*.DotSettings.user

@@ -1,0 +1,79 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>FilepathFooter</AssemblyName>
+    <RootNamespace>FilepathFooter</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+
+    <!-- VSIX packaging -->
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
+    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>true</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
+    <CreateVsixContainer>true</CreateVsixContainer>
+    <DeployExtension>true</DeployExtension>
+    <UseCodebase>true</UseCodebase>
+    <CopyVsixManifestToOutput>true</CopyVsixManifestToOutput>
+    <TemplateOutputDirectory>$(IntermediateOutputPath)\Templates</TemplateOutputDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="source.extension.vsixmanifest">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Microsoft.VisualStudio.SDK pulls in all VS editor / shell references.
+      ExcludeAssets="runtime" keeps VS-owned assemblies out of the VSIX output
+      because they are already present inside Visual Studio.
+    -->
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.31902.203" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.7.2196" />
+  </ItemGroup>
+
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" />
+
+  <!--
+    In SDK-style projects the implicit SDK targets run AFTER the project body,
+    so $(TargetName) and $(OutDir) are not yet available when Microsoft.VsSDK.targets
+    evaluates TargetVsixContainerName / TargetVsixContainer. Similarly, the SDK
+    overwrites PrepareForRunDependsOn after the project body.
+    Use a Target with AfterTargets to ensure VSIX creation runs during Build.
+  -->
+  <PropertyGroup>
+    <TargetVsixContainerName>$(AssemblyName).vsix</TargetVsixContainerName>
+  </PropertyGroup>
+
+  <!--
+    In SDK-style projects, $(OutputPath), $(TargetPath), etc. are only fully
+    resolved after the implicit SDK targets have run.  The VSSDK targets evaluate
+    property defaults at import time, producing empty paths.  We fix this by
+    re-setting the properties inside a target that runs after the SDK's Build
+    targets have finished compiling.
+  -->
+  <Target Name="SetVsixProperties" BeforeTargets="GeneratePkgDef;CreateVsixContainer">
+    <PropertyGroup>
+      <CreatePkgDefAssemblyToProcess>$(TargetPath)</CreatePkgDefAssemblyToProcess>
+      <TargetVsixContainer>$(TargetDir)$(TargetVsixContainerName)</TargetVsixContainer>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="BuildVsix"
+          AfterTargets="Build"
+          DependsOnTargets="GeneratePkgDef;CopyPkgDef;CreateVsixContainer"
+          Condition="'$(CreateVsixContainer)' == 'true'" />
+
+</Project>
