@@ -1,6 +1,6 @@
 # Filepath Footer
 
-A Visual Studio extension that displays the **full file path** of the currently active document in a thin bar at the bottom of every editor window.
+An open-source Visual Studio extension that displays the **full file path** of the currently active document in a thin bar at the bottom of every editor window.
 
 <img width="1577" height="976" alt="demo of filepath on footer" src="https://github.com/user-attachments/assets/0049a074-469f-4853-8b37-364ce3d2b022" />
 
@@ -34,18 +34,5 @@ A Visual Studio extension that displays the **full file path** of the currently 
 Double-click the generated `.vsix` file, or go to  
 **Extensions → Manage Extensions → Install from VSIX…**
 
-## Project Structure
-
-```
-FilepathFooter/
-├── Editor/
-│   ├── FilepathFooterMargin.cs          # WPF Grid margin — renders the path and handles click-to-copy
-│   └── FilepathFooterMarginFactory.cs   # MEF factory that wires the margin into VS
-├── FilepathFooterPackage.cs             # AsyncPackage entry point (registration only)
-├── source.extension.vsixmanifest        # VSIX metadata, installation targets, and assets
-└── FilepathFooter.csproj                # SDK-style project with VSSDK integration
-```
-
 ## Author
-
-Vic Guadalupe
+EspressoBeans (Vic Guadalupe)
